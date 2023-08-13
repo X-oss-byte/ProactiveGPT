@@ -50,12 +50,11 @@ def main():
         print("No model was selected. Exiting.")
         return
 
-    # Enter API key.
-    api_token = questionary.text("Please enter your OpenAI API token. \n"
-                                 "If empty, I will use the OPENAI_API_KEY "
-                                 "environment variable:").ask()
-
-    if api_token:
+    if api_token := questionary.text(
+        "Please enter your OpenAI API token. \n"
+        "If empty, I will use the OPENAI_API_KEY "
+        "environment variable:"
+    ).ask():
         print("Using user-provided API key.")
         openai.api_key = api_token
     else:
