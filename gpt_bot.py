@@ -24,8 +24,8 @@ def split_long_string(text, max_length=MAX_MESSAGE_LENGTH):
     current_line = ""
 
     for word in words:
-        if len(current_line + " " + word) <= max_length:
-            current_line += " " + word
+        if len(f"{current_line} {word}") <= max_length:
+            current_line += f" {word}"
         else:
             result.append(current_line.strip())
             current_line = word
@@ -87,7 +87,7 @@ class GptBot(commands.Bot):
         user = await self.fetch_user(self.user_id)
         if user is not None:
             await user.send(f"Your initial instruction to ChatGPT: ```{self.task_prompt}```")
-            await user.send(f"ChatGPT is now generating the plan for you...")
+            await user.send("ChatGPT is now generating the plan for you...")
             gpt_response = await loop.run_in_executor(
                 None, send_message_to_chatgpt, self.messages, self.task_prompt, self.model)
             if (len(gpt_response) > MAX_MESSAGE_LENGTH):
@@ -101,7 +101,7 @@ class GptBot(commands.Bot):
             while True:
                 now = datetime.datetime.now()
                 seconds_till_next_hour = 3600 - now.minute * \
-                    60 - now.second - now.microsecond / 1_000_000
+                        60 - now.second - now.microsecond / 1_000_000
                 # Add more hours to make up cadence hours.
                 more_hours = (now.hour + 1) % int(self.cadence)
                 seconds_till_next_run = seconds_till_next_hour + more_hours * 3600
